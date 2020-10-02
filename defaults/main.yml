@@ -1,0 +1,28 @@
+---
+usbip_install: true
+# server off by default since its not very secure - you must trust the network and the devices in it 100%
+usbip_install_server: false
+usbip_install_client: true
+
+usbip_server_modules:
+  - usbip-core
+  - usbip-host
+
+usbip_client_modules:
+  - usbip-core
+  - vhci-hcd
+
+usbip_bind_devices: []
+usbip_attach_devices: []
+
+# bind data example:
+#usbip_bind_devices:
+#  - "1-2"
+
+# atttach data example:
+#usbip_attach_devices:
+#  - name: some_device_service_name
+#    remote_host: "127.0.0.1"
+#    # bus_id (or device_id - in future version) must be set
+#    bus_id: "1-2"
+#    device_id: "..."

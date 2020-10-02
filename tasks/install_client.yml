@@ -1,0 +1,15 @@
+---
+- name: configure usbip client modules for auto loading
+  become: yes
+  kernel_blacklist:
+    blacklist_file: /etc/modprobe.d/usbip.conf
+    name: "{{ item }}"
+    state: present
+  loop: "{{ usbip_client_modules }}"
+
+- name: load usbip client modules
+  become: yes
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ usbip_client_modules }}"

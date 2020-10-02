@@ -1,0 +1,13 @@
+---
+- name: install usbip-attach service
+  become: yes
+  template:
+    src: usbip-attach.service.j2
+    dest: /lib/systemd/system/usbip-attach-{{ item.name }}.service
+
+- name: start and enable usbip-attach service
+  become: yes
+  systemd:
+    name: usbip-attach-{{ item.name }}
+    enabled: yes
+    state: started

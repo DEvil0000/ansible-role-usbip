@@ -1,0 +1,29 @@
+---
+- name: install usbip generic
+  import_tasks: install.yml
+  when: usbip_install | bool
+
+- name: install usbip server
+  import_tasks: install_server.yml
+  when:
+    - usbip_install | bool
+    - usbip_install_server | bool
+
+- name: install usbip client
+  import_tasks: install_client.yml
+  when:
+    - usbip_install | bool
+    - usbip_install_client | bool
+
+- name: configure usbip bind
+  import_tasks: configure_bind.yml
+  when:
+    - usbip_install | bool
+    - usbip_install_server | bool
+
+- name: configure usbip attach
+  include_tasks: configure_attach.yml
+  loop: "{{ usbip_attach_devices }}"
+  when:
+    - usbip_install | bool
+    - usbip_install_client | bool

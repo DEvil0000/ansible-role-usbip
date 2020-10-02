@@ -1,0 +1,40 @@
+---
+- name: configure usbip server modules for auto loading
+  become: yes
+  kernel_blacklist:
+    blacklist_file: /etc/modprobe.d/usbip.conf
+    name: "{{ item }}"
+    state: present
+  loop: "{{ usbip_server_modules }}"
+
+- name: load usbip server modules
+  become: yes
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ usbip_server_modules }}"
+
+- name: install usbipd service
+  become: yes
+  template:
+    src: usbipd.service.j2
+    dest: /lib/systemd/system/usbipd.service
+
+- name: start and enable usbipd service
+  become: yes
+  systemd:
+    name: usbipd
+    enabled: yes
+    state: started
+
+- name: install usbip-bind@ service
+  become: yes
+  template:
+    src: usbip-bind@.service.j2
+    dest: /lib/systemd/system/usbip-bind@.service
+
+- name: install usbip-bind-id@ service
+  become: yes
+  template:
+    src: usbip-bind-id@.service.j2
+    dest: /lib/systemd/system/usbip-bind-id@.service

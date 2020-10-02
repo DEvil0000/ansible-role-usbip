@@ -1,0 +1,16 @@
+[Unit]
+Description=USB-IP Attach device
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+#TODO improve service
+Type=oneshot
+#TODO device should be possible in the future
+ExecStart=/usr/bin/usbip attach -r "{{ item.remote_host }}" -b "{{ item.bus_id }}"
+RemainAfterExit=yes
+#ExecStop=/usr/bin/usbip detach -p  
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

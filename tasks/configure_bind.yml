@@ -1,0 +1,8 @@
+---
+- name: start and enable usbip-bind@ service
+  become: yes
+  systemd:
+    name: usbip-bind@{{ item }}
+    enabled: yes
+    state: started
+  loop: "{{ usbip_bind_devices }}"

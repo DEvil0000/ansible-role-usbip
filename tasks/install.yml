@@ -1,0 +1,27 @@
+---
+- name: install usbip package
+  become: yes
+  package:
+    name: linux-tools-generic
+    state: present
+
+- name: check if /var/lib/usbutils/usb.ids exists
+  stat:
+    path: /var/lib/usbutils/usb.ids
+  register: stat_result
+
+- name: create /usr/share/hwdata/
+  become: yes
+  file:
+    path: /usr/share/hwdata/
+    state: directory
+    mode: 755
+  when: not stat_result.stat.exists
+
+- name: link usb hardware details
+  become: yes
+  file:
+    src: /var/lib/usbutils/usb.ids
+    dest: /usr/share/hwdata/
+    state: link
+  when: not stat_result.stat.exists
